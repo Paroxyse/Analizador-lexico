@@ -22,7 +22,7 @@ string LeerArc(string filetl) {
 
     if (file.fail()) {
         cout << "El archivo no existe" << endl;
-       
+        return "";
     }
 
    
@@ -161,7 +161,8 @@ vector<int> cargarVint(string s)
 vector<string> cargarVstring(string s) 
 {
     vector<string> aux{};
-    ifstream input(s);
+    ifstream input;
+    input.open(s);
     if (input)
     {
         string cadena;
@@ -224,11 +225,12 @@ void analizar(string inputString, string charset, string TFunc, string CodeList,
 int main()
 {
     //loadSets();
-    vector<string> a = cargarVstring("ListaMensajes0.txt");
-    for (int i = 0; i < a.size(); i++) {
-        cout << a[i];
-        cout << endl;
-    }
+   vector<string> a = cargarVstring("ListaCodigos0.txt");
+   for(int i=0;i<a.size();i++)
+   {
+       cout << a[i]<<endl;
+   }
+
     
     
 }
