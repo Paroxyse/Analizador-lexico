@@ -52,6 +52,7 @@ void loadSets() {
 }
 int isLetter(char c) 
 {
+    
     for (int i = 0; i < mayus.size(); i++) 
     {
         if (c == mayus.at(i)) 
@@ -66,9 +67,9 @@ int isLetter(char c)
     }
     return 0;
 }
-int isSomethingelse(char c, string s) {
-    string s=LeerArc(s);
-    for (int i = 0; i < s.size(); i++) {
+int isSomethingelse(char c, string str) {
+    string s=LeerArc(str);
+    for (int i = 0; i < str.size(); i++) {
         if (c == s.at(i)) 
         {
             return i + 4;
@@ -139,6 +140,53 @@ void cargarFT(string s)
     }
     else std::cerr << "\nError: No se encontró el archivo\n\n";
 }
+vector<int> cargarVint(string s) 
+{
+    vector<int> aux{};
+    ifstream input(s);
+    if (input) 
+    {
+        int valor;
+        while (input >> valor) 
+        {
+            aux.push_back(valor);
+        }
+        return aux;
+    }
+     
+    
+        cout << "Archivo conteniendo una lista de enteros no encontrado";
+     return aux;
+}
+vector<string> cargarVstring(string s) 
+{
+    vector<string> aux{};
+    ifstream input(s);
+    if (input)
+    {
+        string cadena;
+        while (input >> cadena)
+        {
+            aux.push_back(cadena);
+        }
+    }
+    else
+    {
+        cout << "Archivo conteniendo una lista de strings no encontrado";
+    }
+    return aux;
+}
+int getItemIndex(int code, vector<int> v) 
+{
+    for (int i = 0; i < v.size(); i++)
+    {
+        if (code == v[i]) 
+        {
+            return i;
+        }
+    }
+    return -1;
+}
 void analizar(string inputString, string charset, string TFunc, string CodeList, string MessageList, bool InputMode) 
 {
     cargarFT(TFunc);
@@ -146,18 +194,27 @@ void analizar(string inputString, string charset, string TFunc, string CodeList,
     int symb;
     int i = 0;
     string inString;
-    inString = LeerArc(inputFile);
+    inString = LeerArc(inputString);
     while (i < inString.size()) 
     {
         cout << "\n";
         while (state < 100) 
         {
-            symb = dataType(inString.at(i));
+            symb = dataType(inString.at(i),charset);
             state = FT[state][symb];
         }
         //load code list
+        vector<int> cList=cargarVint(CodeList);
         //load message list
+        vector<string> mList = cargarVstring(MessageList);
         //Get index on the message list from the code list
+        int ItemIndex= getItemIndex(state, cList);
+        if(ItemIndex== -1)
+        {
+            cout << "Estado inválido alcanzado";
+            return;
+        }
+        cout << mList[ItemIndex];
         //add token / error type to a string
         //print 
     }
@@ -166,8 +223,12 @@ void analizar(string inputString, string charset, string TFunc, string CodeList,
 }
 int main()
 {
-    loadSets();
-   
+    //loadSets();
+    vector<string> a = cargarVstring("ListaMensajes0.txt");
+    for (int i = 0; i < a.size(); i++) {
+        cout << a[i];
+        cout << endl;
+    }
     
     
 }
