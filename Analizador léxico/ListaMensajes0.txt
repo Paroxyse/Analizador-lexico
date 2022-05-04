@@ -1,0 +1,7 @@
+Entero
+Real
+Notación científica
+Caracter no esperado despues de:
+Se esperaban un digito despues del punto decimal
+Se esperaba un digito, + o -
+Se esperaba un digito despues de E/e

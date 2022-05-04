@@ -12,19 +12,21 @@ using namespace std;
 string mayus;
 string minun;
 string input;
+string output;
 std::vector<std::vector<int>> FT{};
+int status = 0;
 
-string LeerArchivo(string filetl) {
+string LeerArc(string filetl) {
     ifstream file;
     file.open(filetl, ios::in);
 
     if (file.fail()) {
         cout << "El archivo no existe" << endl;
-        exit(1);
+       
     }
 
    
-    cout << "Archivo identificado" << endl;
+    cout << "Archivo cargado correctamente" << endl;
     string str;
     char c;
 
@@ -40,9 +42,9 @@ string LeerArchivo(string filetl) {
 }
 void loadSets() {
    
-    mayus = LeerArchivo("Mayus.txt");
-    minun = LeerArchivo("Minus.txt");
-    input = LeerArchivo("Entrada.txt");
+    mayus = LeerArc("Mayus.txt");
+    minun = LeerArc("Minus.txt");
+    input = LeerArc("Entrada.txt");
    // cout << mayus <<"\n";
     //cout << minun << "\n";
 
@@ -64,17 +66,17 @@ int isLetter(char c)
     }
     return 0;
 }
-int isSomethingelse(char c) {
-    string s=LeerArchivo("symb.txt");
+int isSomethingelse(char c, string s) {
+    string s=LeerArc(s);
     for (int i = 0; i < s.size(); i++) {
         if (c == s.at(i)) 
         {
-            return i + 3;
+            return i + 4;
         }
     }
     return 0;
 }
-int dataType(char c) 
+int dataType(char c, string s) 
 {
     if (c >= '0' && c <= '9') 
     {
@@ -87,11 +89,16 @@ int dataType(char c)
     {
         return aux;
     }
-    if (c == '\n' || c == '\t' || c == ' ') 
+    if (c == '\n')
     {
         return 3;
     }
-    aux = isSomethingelse(c);
+    if (c == '\t' || c == ' ') 
+    {
+        return 4;
+    }
+   
+    aux = isSomethingelse(c,s);
     if (aux != 0) 
     {
         return aux;
@@ -99,42 +106,68 @@ int dataType(char c)
 
     
 }
-void cargarFT() 
+void cargarFT(string s) 
 {
     //Gracias a la maravillosa persona de SO que hizo esto posible
+    //Esta funcion llena un vector de enteros bidimensional con la información contenida en un archivo
    
-    std::ifstream sourceFileStream{ "TablaT.txt" };
+    std::ifstream sourceFileStream{ s };
 
     
     if (sourceFileStream) {
 
-        // Define 2D array to hold all data and initialize it with all 0
+        
 
 
-        // Read the rows and columns from the source file
+        
         std::string line{};
         while (std::getline(sourceFileStream, line)) {
 
-            // Add a new row to our matrix
+           
             FT.push_back(std::vector<int>{});
 
-            // Read all column data
+           
             int c{};
             for (std::istringstream iss(line); iss >> c; FT.back().push_back(c))
                 ;
         }
-        // Debug output
+      
         for (const auto& row : FT) {
             for (const auto& col : row) std::cout << col << ' ';
             std::cout << '\n';
         }
     }
-    else std::cerr << "\nError: Could not open source file\n\n";
+    else std::cerr << "\nError: No se encontró el archivo\n\n";
+}
+void analizar(string inputString, string charset, string TFunc, string CodeList, string MessageList, bool InputMode) 
+{
+    cargarFT(TFunc);
+    int state=0;
+    int symb;
+    int i = 0;
+    string inString;
+    inString = LeerArc(inputFile);
+    while (i < inString.size()) 
+    {
+        cout << "\n";
+        while (state < 100) 
+        {
+            symb = dataType(inString.at(i));
+            state = FT[state][symb];
+        }
+        //load code list
+        //load message list
+        //Get index on the message list from the code list
+        //add token / error type to a string
+        //print 
+    }
+
+
 }
 int main()
 {
     loadSets();
-    cargarFT();
+   
     
     
 }
