@@ -190,11 +190,13 @@ int getItemIndex(int code, vector<int> v)
 }
 void analizar(string inputString, string charset, string TFunc, string CodeList, string MessageList, bool InputMode) 
 {
+    //bugfix this shit
     cargarFT(TFunc);
     int state=0;
     int symb;
     int i = 0;
     string inString;
+    output = "";
     inString = LeerArc(inputString);
     while (i < inString.size()) 
     {
@@ -202,8 +204,11 @@ void analizar(string inputString, string charset, string TFunc, string CodeList,
         while (state < 100) 
         {
             symb = dataType(inString.at(i),charset);
+            cout << symb;
             state = FT[state][symb];
+            cout << state;
         }
+        i++;
         //load code list
         vector<int> cList=cargarVint(CodeList);
         //load message list
@@ -215,21 +220,25 @@ void analizar(string inputString, string charset, string TFunc, string CodeList,
             cout << "Estado inválido alcanzado";
             return;
         }
-        cout << mList[ItemIndex];
+        output.append( mList[ItemIndex]);
+        output.append("\n");
         //add token / error type to a string
         //print 
+        cout << output;
+        
     }
 
 
 }
 int main()
 {
-    //loadSets();
-   vector<string> a = cargarVstring("ListaCodigos0.txt");
-   for(int i=0;i<a.size();i++)
-   {
-       cout << a[i]<<endl;
-   }
+    loadSets();
+    analizar("Entrada.txt",
+        LeerArc("symbnum.txt"),
+        "TablaT0.txt",
+        "ListaCodigos0.txt",
+        "ListaMensajes0.txt",
+        false);
 
     
     
