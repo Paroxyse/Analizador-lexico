@@ -146,6 +146,7 @@
     <Text Include="Entrada.txt" />
     <Text Include="Minus.txt" />
     <Text Include="symb.txt" />
+    <Text Include="TablaT.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

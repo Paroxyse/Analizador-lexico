@@ -2,15 +2,17 @@
 //
 
 #include <iostream>
-#include <vector>
 #include <fstream>
-
+#include <sstream>
+#include <vector>
+#include <string>
 using namespace std;
 
 
 string mayus;
 string minun;
 string input;
+std::vector<std::vector<int>> FT{};
 
 string LeerArchivo(string filetl) {
     ifstream file;
@@ -97,10 +99,43 @@ int dataType(char c)
 
     
 }
+void cargarFT() 
+{
+    //Gracias a la maravillosa persona de SO que hizo esto posible
+   
+    std::ifstream sourceFileStream{ "TablaT.txt" };
 
+    
+    if (sourceFileStream) {
+
+        // Define 2D array to hold all data and initialize it with all 0
+
+
+        // Read the rows and columns from the source file
+        std::string line{};
+        while (std::getline(sourceFileStream, line)) {
+
+            // Add a new row to our matrix
+            FT.push_back(std::vector<int>{});
+
+            // Read all column data
+            int c{};
+            for (std::istringstream iss(line); iss >> c; FT.back().push_back(c))
+                ;
+        }
+        // Debug output
+        for (const auto& row : FT) {
+            for (const auto& col : row) std::cout << col << ' ';
+            std::cout << '\n';
+        }
+    }
+    else std::cerr << "\nError: Could not open source file\n\n";
+}
 int main()
 {
     loadSets();
+    cargarFT();
+    
     
 }
 

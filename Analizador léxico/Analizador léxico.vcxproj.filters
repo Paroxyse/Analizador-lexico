@@ -32,5 +32,8 @@
     <Text Include="symb.txt">
       <Filter>Archivos de recursos</Filter>
     </Text>
+    <Text Include="TablaT.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
   </ItemGroup>
 </Project>
