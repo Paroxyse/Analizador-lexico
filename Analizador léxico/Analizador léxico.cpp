@@ -206,11 +206,16 @@ void analizar(string inputString, string charset, string TFunc, string CodeList,
     inString = LeerArc(inputString);
     while (i < inString.size()) 
     {
+        symb = dataType(inString.at(i), charset);
         cout << "\n";
+        if (symb == -1) {
+            state = 500;
+            cout << i << " " << symb << " " << state << " " << inString.at(i);
+        }
         if (state < TFunc.size()) 
         {
 
-            symb = dataType(inString.at(i),charset);
+           
             state = FT[state][symb];
 
             
@@ -259,6 +264,11 @@ void analizar(string inputString, string charset, string TFunc, string CodeList,
 }
 int main()
 {
+    //La entrada se realiza mediante el archivo Entrada.txt
+    //symbnum incluye todos los símbolos del lenguaje que no son letras ni números
+    //TablaT0 tiene la función de transición
+    //ListaCodigos tiene los códigos de tokens y error
+    //ListaMensajes incluye incluye los mensajes de token y error
     loadSets();
     analizar("Entrada.txt",
         "symbnum.txt",
@@ -270,7 +280,7 @@ int main()
     cout << FT[0][2]<<endl;
     cout << FT.size();*/
     
-    cout << isLetter('E');
+    //cout << isLetter('E');
 }
 
 
