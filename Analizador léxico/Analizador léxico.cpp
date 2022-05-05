@@ -6,8 +6,8 @@
 #include <sstream>
 #include <vector>
 #include <string>
-using namespace std;
 
+using namespace std;
 
 string mayus;
 string minun;
@@ -21,12 +21,12 @@ string LeerArc(string filetl) {
     file.open(filetl, ios::in);
 
     if (file.fail()) {
-        cout << "El archivo no existe" << endl;
+        cout << "El archivo "<<filetl<<" no existe" << endl;
         return "";
     }
 
    
-    cout << "Archivo cargado correctamente" << endl;
+   // cout << "Archivo cargado correctamente" << endl;
     string str;
     char c;
 
@@ -68,14 +68,14 @@ int isLetter(char c)
     return 0;
 }
 int isSomethingelse(char c, string str) {
-    string s=LeerArc(str);
-    for (int i = 0; i < str.size(); i++) {
+    string s=LeerArc(str);//sus
+    for (int i = 0; i < s.size(); i++) {
         if (c == s.at(i)) 
         {
-            return i + 4;
+            return i+5;
         }
     }
-    return 0;
+    return -1;
 }
 int dataType(char c, string s) 
 {
@@ -88,6 +88,7 @@ int dataType(char c, string s)
     int aux = isLetter(c);
     if (aux >=1 && aux<=2) 
     {
+        cout << aux;
         return aux;
     }
     if (c == '\n')
@@ -179,6 +180,10 @@ vector<string> cargarVstring(string s)
 }
 int getItemIndex(int code, vector<int> v) 
 {
+    if (v.size() == 0) 
+    {
+        return -1;
+    }
     for (int i = 0; i < v.size(); i++)
     {
         if (code == v[i]) 
@@ -186,7 +191,7 @@ int getItemIndex(int code, vector<int> v)
             return i;
         }
     }
-    return -1;
+    
 }
 void analizar(string inputString, string charset, string TFunc, string CodeList, string MessageList, bool InputMode) 
 {
@@ -201,47 +206,70 @@ void analizar(string inputString, string charset, string TFunc, string CodeList,
     while (i < inString.size()) 
     {
         cout << "\n";
-        while (state < 100) 
+        if (state < TFunc.size()) 
         {
-            symb = dataType(inString.at(i),charset);
-            cout << symb;
-            state = FT[state][symb];
-            cout << state;
-        }
-        i++;
-        //load code list
-        vector<int> cList=cargarVint(CodeList);
-        //load message list
-        vector<string> mList = cargarVstring(MessageList);
-        //Get index on the message list from the code list
-        int ItemIndex= getItemIndex(state, cList);
-        if(ItemIndex== -1)
-        {
-            cout << "Estado inválido alcanzado";
-            return;
-        }
-        output.append( mList[ItemIndex]);
-        output.append("\n");
-        //add token / error type to a string
-        //print 
-        cout << output;
-        
-    }
 
+            symb = dataType(inString.at(i),charset);
+            state = FT[state][symb];
+
+            
+            cout << i << " "<<symb<<" "<<state<<" "<<inString.at(i);
+           
+           //Si este es el último caracter o si el siguiente estado desde el actual explota, corta el token aquí y salta a un estado
+            //de final1
+            if (i == inString.size() - 1) 
+            {
+                state = FT[state][FT[state].size() - 1];
+            }
+            else if(FT[state][dataType(inString.at(i+1), charset)]>TFunc.size())
+            {
+                //cout << "pain" << endl;
+                state = FT[state][FT[state].size() - 1];
+            }
+            
+        }
+        
+        if (state > TFunc.size()) 
+        {
+            //load code list
+            vector<int> cList = cargarVint(CodeList);
+            //load message list
+            vector<string> mList = cargarVstring(MessageList);
+            //Get index on the message list from the code list
+            int ItemIndex = getItemIndex(state, cList);
+            if (ItemIndex == -1)
+            {
+                ItemIndex = getItemIndex(600, cList);
+            }
+            output.append(mList.at(ItemIndex));
+            output.append("\n");
+
+            state = 0;
+        }
+            
+        
+        
+   
+        
+        i++;
+    }
+    cout << "\n"<<output;
 
 }
 int main()
 {
     loadSets();
     analizar("Entrada.txt",
-        LeerArc("symbnum.txt"),
+        "symbnum.txt",
         "TablaT0.txt",
         "ListaCodigos0.txt",
         "ListaMensajes0.txt",
         false);
-
+  /*  cargarFT("TablaT0.txt");
+    cout << FT[0][2]<<endl;
+    cout << FT.size();*/
     
-    
+    cout << isLetter('E');
 }
 
 

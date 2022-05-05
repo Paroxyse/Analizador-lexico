@@ -1,7 +1,8 @@
 Entero
 Real
-Notación científica
+Notacion_cientifica
 Caracter no esperado despues de:
 Se esperaban un digito despues del punto decimal
 Se esperaba un digito, + o -
 Se esperaba un digito despues de E/e
+Alch no se
