@@ -20,39 +20,30 @@ string LeerArc(string filetl) {
     ifstream file;
     file.open(filetl, ios::in);
 
-    if (file.fail()) {
+    if (file.fail()) 
+    {
         cout << "El archivo "<<filetl<<" no existe" << endl;
         return "";
     }
-
-   
-   // cout << "Archivo cargado correctamente" << endl;
     string str;
     char c;
 
-    while (file.get(c)) {
-       // cout << c;
+    while (file.get(c)) 
+    {
         str.push_back(c);
     }
-    cout << endl;
-
-    file.close();
+        file.close();
 
     return str;
 }
 void loadSets() {
-   
+   //Código que podría reemplazar por algo más flexible, pero dejaré ese cambio para el analizador completo
     mayus = LeerArc("Mayus.txt");
     minun = LeerArc("Minus.txt");
     input = LeerArc("Entrada.txt");
-   // cout << mayus <<"\n";
-    //cout << minun << "\n";
-
-
 }
 int isLetter(char c) 
 {
-    
     for (int i = 0; i < mayus.size(); i++) 
     {
         if (c == mayus.at(i)) 
@@ -62,8 +53,7 @@ int isLetter(char c)
         if (c == minun.at(i))
         {
             return 2;
-        }
-       
+        } 
     }
     return 0;
 }
@@ -83,8 +73,6 @@ int dataType(char c, string s)
     {
         return 0;
     }
-
-
     int aux = isLetter(c);
     if (aux >=1 && aux<=2) 
     {
@@ -92,6 +80,7 @@ int dataType(char c, string s)
         return aux;
     }
     // code some return shenanigans to fix the e thing
+    // Arreglar lo de la e en versión completa
     if (c == '\n')
     {
         return 3;
@@ -100,14 +89,12 @@ int dataType(char c, string s)
     {
         return 4;
     }
-   
     aux = isSomethingelse(c,s);
     if (aux != 0) 
     {
         return aux;
     }
-    return -1;
-    
+    return -1;  
 }
 void cargarFT(string s) 
 {
@@ -116,26 +103,18 @@ void cargarFT(string s)
    
     std::ifstream sourceFileStream{ s };
 
-    
     if (sourceFileStream) {
-
-        
-
-
-        
         std::string line{};
-        while (std::getline(sourceFileStream, line)) {
-
-           
+        while (std::getline(sourceFileStream, line)) 
+        {
             FT.push_back(std::vector<int>{});
-
-           
             int c{};
             for (std::istringstream iss(line); iss >> c; FT.back().push_back(c))
                 ;
         }
       
-        for (const auto& row : FT) {
+        for (const auto& row : FT) 
+        {
             for (const auto& col : row) std::cout << col << ' ';
             std::cout << '\n';
         }
@@ -155,8 +134,6 @@ vector<int> cargarVint(string s)
         }
         return aux;
     }
-     
-    
         cout << "Archivo conteniendo una lista de enteros no encontrado";
      return aux;
 }
@@ -196,7 +173,7 @@ int getItemIndex(int code, vector<int> v)
 }
 void analizar(string inputString, string charset, string TFunc, string CodeList, string MessageList, bool InputMode) 
 {
-    //bugfix this shit
+    
     cargarFT(TFunc);
     int state=0;
     int symb;
@@ -276,20 +253,5 @@ int main()
         "ListaCodigos0.txt",
         "ListaMensajes0.txt",
         false);
-  /*  cargarFT("TablaT0.txt");
-    cout << FT[0][2]<<endl;
-    cout << FT.size();*/
-    
-    //cout << isLetter('E');
+ 
 }
-
-
-// Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
-// Depurar programa: F5 o menú Depurar > Iniciar depuración
-
-// Sugerencias para primeros pasos: 1. Use la ventana del Explorador de soluciones para agregar y administrar archivos
-//   2. Use la ventana de Team Explorer para conectar con el control de código fuente
-//   3. Use la ventana de salida para ver la salida de compilación y otros mensajes
-//   4. Use la ventana Lista de errores para ver los errores
-//   5. Vaya a Proyecto > Agregar nuevo elemento para crear nuevos archivos de código, o a Proyecto > Agregar elemento existente para agregar archivos de código existentes al proyecto
-//   6. En el futuro, para volver a abrir este proyecto, vaya a Archivo > Abrir > Proyecto y seleccione el archivo .sln
