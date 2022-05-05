@@ -12,19 +12,21 @@ using namespace std;
 string mayus;
 string minun;
 string input;
+string output;
 std::vector<std::vector<int>> FT{};
+int status = 0;
 
-string LeerArchivo(string filetl) {
+string LeerArc(string filetl) {
     ifstream file;
     file.open(filetl, ios::in);
 
     if (file.fail()) {
         cout << "El archivo no existe" << endl;
-        exit(1);
+        return "";
     }
 
    
-    cout << "Archivo identificado" << endl;
+    cout << "Archivo cargado correctamente" << endl;
     string str;
     char c;
 
@@ -40,9 +42,9 @@ string LeerArchivo(string filetl) {
 }
 void loadSets() {
    
-    mayus = LeerArchivo("Mayus.txt");
-    minun = LeerArchivo("Minus.txt");
-    input = LeerArchivo("Entrada.txt");
+    mayus = LeerArc("Mayus.txt");
+    minun = LeerArc("Minus.txt");
+    input = LeerArc("Entrada.txt");
    // cout << mayus <<"\n";
     //cout << minun << "\n";
 
@@ -50,6 +52,7 @@ void loadSets() {
 }
 int isLetter(char c) 
 {
+    
     for (int i = 0; i < mayus.size(); i++) 
     {
         if (c == mayus.at(i)) 
@@ -64,17 +67,17 @@ int isLetter(char c)
     }
     return 0;
 }
-int isSomethingelse(char c) {
-    string s=LeerArchivo("symb.txt");
-    for (int i = 0; i < s.size(); i++) {
+int isSomethingelse(char c, string str) {
+    string s=LeerArc(str);
+    for (int i = 0; i < str.size(); i++) {
         if (c == s.at(i)) 
         {
-            return i + 3;
+            return i + 4;
         }
     }
     return 0;
 }
-int dataType(char c) 
+int dataType(char c, string s) 
 {
     if (c >= '0' && c <= '9') 
     {
@@ -87,11 +90,16 @@ int dataType(char c)
     {
         return aux;
     }
-    if (c == '\n' || c == '\t' || c == ' ') 
+    if (c == '\n')
     {
         return 3;
     }
-    aux = isSomethingelse(c);
+    if (c == '\t' || c == ' ') 
+    {
+        return 4;
+    }
+   
+    aux = isSomethingelse(c,s);
     if (aux != 0) 
     {
         return aux;
@@ -99,42 +107,139 @@ int dataType(char c)
 
     
 }
-void cargarFT() 
+void cargarFT(string s) 
 {
     //Gracias a la maravillosa persona de SO que hizo esto posible
+    //Esta funcion llena un vector de enteros bidimensional con la información contenida en un archivo
    
-    std::ifstream sourceFileStream{ "TablaT.txt" };
+    std::ifstream sourceFileStream{ s };
 
     
     if (sourceFileStream) {
 
-        // Define 2D array to hold all data and initialize it with all 0
+        
 
 
-        // Read the rows and columns from the source file
+        
         std::string line{};
         while (std::getline(sourceFileStream, line)) {
 
-            // Add a new row to our matrix
+           
             FT.push_back(std::vector<int>{});
 
-            // Read all column data
+           
             int c{};
             for (std::istringstream iss(line); iss >> c; FT.back().push_back(c))
                 ;
         }
-        // Debug output
+      
         for (const auto& row : FT) {
             for (const auto& col : row) std::cout << col << ' ';
             std::cout << '\n';
         }
     }
-    else std::cerr << "\nError: Could not open source file\n\n";
+    else std::cerr << "\nError: No se encontró el archivo\n\n";
+}
+vector<int> cargarVint(string s) 
+{
+    vector<int> aux{};
+    ifstream input(s);
+    if (input) 
+    {
+        int valor;
+        while (input >> valor) 
+        {
+            aux.push_back(valor);
+        }
+        return aux;
+    }
+     
+    
+        cout << "Archivo conteniendo una lista de enteros no encontrado";
+     return aux;
+}
+vector<string> cargarVstring(string s) 
+{
+    vector<string> aux{};
+    ifstream input;
+    input.open(s);
+    if (input)
+    {
+        string cadena;
+        while (input >> cadena)
+        {
+            aux.push_back(cadena);
+        }
+    }
+    else
+    {
+        cout << "Archivo conteniendo una lista de strings no encontrado";
+    }
+    return aux;
+}
+int getItemIndex(int code, vector<int> v) 
+{
+    for (int i = 0; i < v.size(); i++)
+    {
+        if (code == v[i]) 
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+void analizar(string inputString, string charset, string TFunc, string CodeList, string MessageList, bool InputMode) 
+{
+    //bugfix this shit
+    cargarFT(TFunc);
+    int state=0;
+    int symb;
+    int i = 0;
+    string inString;
+    output = "";
+    inString = LeerArc(inputString);
+    while (i < inString.size()) 
+    {
+        cout << "\n";
+        while (state < 100) 
+        {
+            symb = dataType(inString.at(i),charset);
+            cout << symb;
+            state = FT[state][symb];
+            cout << state;
+        }
+        i++;
+        //load code list
+        vector<int> cList=cargarVint(CodeList);
+        //load message list
+        vector<string> mList = cargarVstring(MessageList);
+        //Get index on the message list from the code list
+        int ItemIndex= getItemIndex(state, cList);
+        if(ItemIndex== -1)
+        {
+            cout << "Estado inválido alcanzado";
+            return;
+        }
+        output.append( mList[ItemIndex]);
+        output.append("\n");
+        //add token / error type to a string
+        //print 
+        cout << output;
+        
+    }
+
+
 }
 int main()
 {
     loadSets();
-    cargarFT();
+    analizar("Entrada.txt",
+        LeerArc("symbnum.txt"),
+        "TablaT0.txt",
+        "ListaCodigos0.txt",
+        "ListaMensajes0.txt",
+        false);
+
     
     
 }

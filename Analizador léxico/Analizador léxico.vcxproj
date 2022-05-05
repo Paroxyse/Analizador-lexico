@@ -142,11 +142,16 @@
     <ClCompile Include="Analizador léxico.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Input.txt" />
+    <Text Include="ListaCodigos0.txt" />
+    <Text Include="ListaMensajes0.txt" />
     <Text Include="Mayus.txt" />
     <Text Include="Entrada.txt" />
     <Text Include="Minus.txt" />
     <Text Include="symb.txt" />
+    <Text Include="symbnum.txt" />
     <Text Include="TablaT.txt" />
+    <Text Include="TablaT0.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
