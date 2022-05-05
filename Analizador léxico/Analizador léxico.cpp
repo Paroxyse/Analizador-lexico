@@ -83,14 +83,15 @@ int dataType(char c, string s)
     {
         return 0;
     }
-    //remember to bodge in some way for e to work lmao prob check whenever datatype returns 1 or 2 just to be safe idk
+
 
     int aux = isLetter(c);
     if (aux >=1 && aux<=2) 
     {
-        cout << aux;
+        //cout << aux;
         return aux;
     }
+    // code some return shenanigans to fix the e thing
     if (c == '\n')
     {
         return 3;
@@ -105,7 +106,7 @@ int dataType(char c, string s)
     {
         return aux;
     }
-
+    return -1;
     
 }
 void cargarFT(string s) 
@@ -217,15 +218,15 @@ void analizar(string inputString, string charset, string TFunc, string CodeList,
            
            //Si este es el último caracter o si el siguiente estado desde el actual explota, corta el token aquí y salta a un estado
             //de final1
-            if (i == inString.size() - 1) 
+            if (i == inString.size() - 1 && state<FT.size()) 
             {
                 state = FT[state][FT[state].size() - 1];
             }
-            else if(FT[state][dataType(inString.at(i+1), charset)]>TFunc.size())
-            {
-                //cout << "pain" << endl;
-                state = FT[state][FT[state].size() - 1];
-            }
+            //else if(FT[state][dataType(inString.at(i+1), charset)]>TFunc.size())
+            //{
+            //    
+            //    //state = FT[state][FT[state].size() - 1];
+            //}
             
         }
         
