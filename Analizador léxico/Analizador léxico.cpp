@@ -58,7 +58,7 @@ int isLetter(char c)
     return 0;
 }
 int isSomethingelse(char c, string str) {
-    string s=LeerArc(str);//sus
+    string s=LeerArc(str);
     for (int i = 0; i < s.size(); i++) {
         if (c == s.at(i)) 
         {
@@ -90,11 +90,9 @@ int dataType(char c, string s)
         return 4;
     }
     aux = isSomethingelse(c,s);
-    if (aux != 0) 
-    {
-        return aux;
-    }
-    return -1;  
+    return aux;
+    
+   
 }
 void cargarFT(string s) 
 {
@@ -189,7 +187,7 @@ void analizar(string inputString, string charset, string TFunc, string CodeList,
             state = 500;
             cout << i << " " << symb << " " << state << " " << inString.at(i);
         }
-        if (state < TFunc.size()) 
+        if (state < FT.size()) 
         {
 
            
@@ -212,7 +210,7 @@ void analizar(string inputString, string charset, string TFunc, string CodeList,
             
         }
         
-        if (state > TFunc.size()) 
+        if (state > FT.size()) 
         {
             //load code list
             vector<int> cList = cargarVint(CodeList);
